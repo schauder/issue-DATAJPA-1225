@@ -23,22 +23,7 @@ import java.util.Set;
  * @author tlang
  */
 @Entity
-@Table(name = "invoice", schema = "public",
-        indexes = {
-                @Index(name = "index_bookingTag", columnList = "bookingTag"),
-                @Index(name = "index_invoiceApiGroups", columnList = "invoiceApiGroups"),
-                @Index(name = "index_invoiceNumber", columnList = "invoiceNumber", unique = true),
-                @Index(name = "index_invoiceDate", columnList = "invoiceDate")
-        })
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "Invoice.full",
-                attributeNodes = {
-                        @NamedAttributeNode("lineItemSet"),
-                        @NamedAttributeNode("invoiceProtocolSet"),
-                        @NamedAttributeNode("recipient"),
-                        @NamedAttributeNode("biller")
-                })
-})
+@Table(name = "invoice", schema = "public")
 @Getter
 @Setter
 public class Invoice implements java.io.Serializable {
@@ -99,12 +84,6 @@ public class Invoice implements java.io.Serializable {
     @Size(min = 5, max = 50, message = "{invoice.salesTaxId.between.message}")
     private String salesTaxId;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "invoice", fetch = FetchType.LAZY)
-    @NotNull(message = "{invoice.lineItemSet.notnull.message}")
-    @Valid
-    @OrderBy("lineItemNumber")
-    private Set<LineItem> lineItemSet;
 
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "invoice", fetch = FetchType.LAZY)
@@ -141,7 +120,6 @@ public class Invoice implements java.io.Serializable {
      * Standard Constructor.
      */
     public Invoice() {
-        this.lineItemSet = new HashSet<>();
         this.invoiceProtocolSet = new HashSet<>();
         this.information = new Information();
         this.invoiceDate = LocalDate.now();
@@ -163,7 +141,6 @@ public class Invoice implements java.io.Serializable {
      * @param paymentTerms         given payment terms
      * @param taxId                given tax id
      * @param salesTaxId           given sales tax id
-     * @param lineItemSet          a given line set
      * @param invoiceProtocolSet   a given invoice protocol set
      * @param invoiceApiGroups     given invcoice api groups
      * @param invoiceState         a given invoice state
@@ -171,9 +148,9 @@ public class Invoice implements java.io.Serializable {
      * @param biller               a given biller
      */
     private Invoice(String bookingTag, String invoiceNumber, String invoiceMemo, LocalDate invoiceDate, LocalDate serviceDateFrom,
-                    LocalDate serviceDateUntil, String accountingConnection, String paymentTerms, String taxId,
-                    String salesTaxId, Set<LineItem> lineItemSet, Set<InvoiceProtocol> invoiceProtocolSet,
-                    String invoiceApiGroups, InvoiceState invoiceState, Recipient recipient, Biller biller) {
+					LocalDate serviceDateUntil, String accountingConnection, String paymentTerms, String taxId,
+					String salesTaxId, Set<InvoiceProtocol> invoiceProtocolSet,
+					String invoiceApiGroups, InvoiceState invoiceState, Recipient recipient, Biller biller) {
         this();
         this.bookingTag = bookingTag;
         this.invoiceNumber = invoiceNumber;
@@ -185,7 +162,6 @@ public class Invoice implements java.io.Serializable {
         this.paymentTerms = paymentTerms;
         this.taxId = taxId;
         this.salesTaxId = salesTaxId;
-        this.lineItemSet = lineItemSet;
         this.invoiceProtocolSet = invoiceProtocolSet;
         this.invoiceApiGroups = invoiceApiGroups;
         this.invoiceState = invoiceState;
@@ -204,12 +180,8 @@ public class Invoice implements java.io.Serializable {
         Invoice test = new Invoice("1546.784.5122", "0001-2017", "Testrechnung",
                 LocalDate.now(), LocalDate.now().minusDays(2), LocalDate.now().minusDays(1),
                 "Kontoverbindung: 123", "Einige Zahlungsmodalitäten",
-                "Steuer ID Nummer", "UST ID Nummer", null, null,
+                "Steuer ID Nummer", "UST ID Nummer", null,
                 "tlang, Seminare", InvoiceState.Invoiced, null, null);
-
-        test.lineItemSet = new HashSet<>();
-        test.lineItemSet.add(LineItem.makeTestLineItem());
-        test.lineItemSet.forEach(s -> s.setInvoice(test));
 
         test.setBiller(Biller.makeTestBiller());
         test.getBiller().getInvoiceSet().add(test);
