@@ -110,7 +110,7 @@ public class LineItem implements java.io.Serializable {
      */
     public LineItem(int lineItemNumber, @NonNull BigDecimal lineItemQuantity, @NonNull String lineItemUnit,
                     @NonNull String lineItemText, @NonNull BigDecimal lineItemUnitPrice, int bettermentTaxRate,
-                    @NonNull Invoice invoice) {
+                    Invoice invoice) {
         this();
         this.lineItemNumber = lineItemNumber;
         this.lineItemQuantity = lineItemQuantity;
@@ -130,6 +130,15 @@ public class LineItem implements java.io.Serializable {
     public static LineItem copy(@NonNull LineItem lineItem) {
         return new LineItem(lineItem.getLineItemNumber(), lineItem.getLineItemQuantity(), lineItem.getLineItemUnit(),
                 lineItem.getLineItemText(), lineItem.lineItemUnitPrice, lineItem.getBettermentTaxRate(), lineItem.getInvoice());
+    }
+
+    /**
+     * Makes a test line item.
+     *
+     * @return LineItem
+     */
+    public static LineItem makeTestLineItem() {
+        return new LineItem(1, BigDecimal.ONE, "Einheit", "Test", BigDecimal.TEN, 19, null);
     }
 
     /**

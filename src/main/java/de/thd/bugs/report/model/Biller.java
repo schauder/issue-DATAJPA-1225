@@ -107,6 +107,36 @@ public class Biller implements java.io.Serializable {
         this.information = new Information();
     }
 
+    private Biller(Campus billerCampus, String billerSalutation, String biller, String billerContactPerson,
+                   String billerContactDetails, String billerStreet, String billerBox, String billerPostalcode,
+                   String billerCity, String billerCountry, String billerWeb) {
+        this();
+        this.billerCampus = billerCampus;
+        this.billerSalutation = billerSalutation;
+        this.biller = biller;
+        this.billerContactPerson = billerContactPerson;
+        this.billerContactDetails = billerContactDetails;
+        this.billerStreet = billerStreet;
+        this.billerBox = billerBox;
+        this.billerPostalcode = billerPostalcode;
+        this.billerCity = billerCity;
+        this.billerCountry = billerCountry;
+        this.billerWeb = billerWeb;
+    }
+
+    /**
+     * Make a test biller.
+     *
+     * @return Biller
+     */
+    public static Biller makeTestBiller() {
+        Biller biller = new Biller(Campus.THD, "Fa", "Test", "Herr Thomas Test",
+                "test@test.com", "Testgasse 22", "", "64567", "Test",
+                "Test", "www.test.com");
+        biller.getInformation().setCreatedBy("tlang");
+        biller.getInformation().setModifiedBy("tlang");
+        return biller;
+    }
 
     /**
      * Compares this instance with another instance of this.

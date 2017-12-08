@@ -149,6 +149,77 @@ public class Invoice implements java.io.Serializable {
         this.serviceDateUntil = LocalDate.now();
     }
 
+    /**
+     * Helper constructor.
+     * Builds a new invoice to be saved later.
+     *
+     * @param bookingTag           a given booking tag
+     * @param invoiceNumber        a given invoice number
+     * @param invoiceMemo          a given invoice memo
+     * @param invoiceDate          a given invoice date
+     * @param serviceDateFrom      a given service date from
+     * @param serviceDateUntil     a given service date until
+     * @param accountingConnection given accounting connecting
+     * @param paymentTerms         given payment terms
+     * @param taxId                given tax id
+     * @param salesTaxId           given sales tax id
+     * @param lineItemSet          a given line set
+     * @param invoiceProtocolSet   a given invoice protocol set
+     * @param invoiceApiGroups     given invcoice api groups
+     * @param invoiceState         a given invoice state
+     * @param recipient            a given recipient
+     * @param biller               a given biller
+     */
+    private Invoice(String bookingTag, String invoiceNumber, String invoiceMemo, LocalDate invoiceDate, LocalDate serviceDateFrom,
+                    LocalDate serviceDateUntil, String accountingConnection, String paymentTerms, String taxId,
+                    String salesTaxId, Set<LineItem> lineItemSet, Set<InvoiceProtocol> invoiceProtocolSet,
+                    String invoiceApiGroups, InvoiceState invoiceState, Recipient recipient, Biller biller) {
+        this();
+        this.bookingTag = bookingTag;
+        this.invoiceNumber = invoiceNumber;
+        this.invoiceMemo = invoiceMemo;
+        this.invoiceDate = invoiceDate;
+        this.serviceDateFrom = serviceDateFrom;
+        this.serviceDateUntil = serviceDateUntil;
+        this.accountingConnection = accountingConnection;
+        this.paymentTerms = paymentTerms;
+        this.taxId = taxId;
+        this.salesTaxId = salesTaxId;
+        this.lineItemSet = lineItemSet;
+        this.invoiceProtocolSet = invoiceProtocolSet;
+        this.invoiceApiGroups = invoiceApiGroups;
+        this.invoiceState = invoiceState;
+        this.recipient = recipient;
+        this.biller = biller;
+        this.information.setCreatedBy("tlang");
+        this.information.setModifiedBy("tlang");
+    }
+
+    /**
+     * Makes a test invoice.
+     *
+     * @return Invoice
+     */
+    public static Invoice makeTestInvoice() {
+        Invoice test = new Invoice("1546.784.5122", "0001-2017", "Testrechnung",
+                LocalDate.now(), LocalDate.now().minusDays(2), LocalDate.now().minusDays(1),
+                "Kontoverbindung: 123", "Einige Zahlungsmodalitäten",
+                "Steuer ID Nummer", "UST ID Nummer", null, null,
+                "tlang, Seminare", InvoiceState.Invoiced, null, null);
+
+        test.lineItemSet = new HashSet<>();
+        test.lineItemSet.add(LineItem.makeTestLineItem());
+        test.lineItemSet.forEach(s -> s.setInvoice(test));
+
+        test.setBiller(Biller.makeTestBiller());
+        test.getBiller().getInvoiceSet().add(test);
+
+        test.setRecipient(Recipient.makeTestRecipient());
+        test.getRecipient().getInvoiceSet().add(test);
+
+        return test;
+    }
+
 
     /**
      * Compares this instance with another instance of this.

@@ -1,5 +1,6 @@
 package de.thd.bugs.report;
 
+import de.thd.bugs.report.model.Invoice;
 import de.thd.bugs.report.model.InvoiceProjection;
 import de.thd.bugs.report.model.InvoiceState;
 import de.thd.bugs.report.service.InvoiceService;
@@ -49,7 +50,13 @@ public class ReportApplication extends AsyncConfigurerSupport implements Command
 
     @Override
     public void run(String... strings) throws InterruptedException, ExecutionException {
-        log.error("Calling method ... ");
+        log.error("first, let´s seed a test invoice ... ");
+        final Future<String> invoice = invoiceService.invoiceInvoice(Invoice.makeTestInvoice());
+        while (!invoice.isDone()) {
+            Thread.sleep(100);
+        }
+
+        log.error("then do the select ...");
         final Future<Iterable<InvoiceProjection>> invoices = invoiceService.findAllProjectedByUserAndApiGroupsAndInvoiceState("tlang", "%tlang%|%Seminare%", InvoiceState.Invoiced);
         while (!invoices.isDone()) {
             Thread.sleep(100);

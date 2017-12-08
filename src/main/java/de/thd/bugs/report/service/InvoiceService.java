@@ -1,5 +1,6 @@
 package de.thd.bugs.report.service;
 
+import de.thd.bugs.report.model.Invoice;
 import de.thd.bugs.report.model.InvoiceProjection;
 import de.thd.bugs.report.model.InvoiceState;
 import lombok.NonNull;
@@ -32,6 +33,18 @@ public class InvoiceService implements IInvoiceService {
     private final
     @NonNull
     IInvoiceRepository invoiceRepository;
+
+    /**
+     * Creates a new invoice.
+     *
+     * @param invoice a given new invoice.
+     * @throws Exception a given exception
+     */
+    @Override
+    @Async
+    public Future<String> invoiceInvoice(Invoice invoice) {
+        return new AsyncResult(invoiceRepository.save(Invoice.makeTestInvoice()));
+    }
 
     /**
      * Finds all invoices projected by the needed values.

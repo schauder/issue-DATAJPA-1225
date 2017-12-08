@@ -1,8 +1,10 @@
 package de.thd.bugs.report.service;
 
 
+import de.thd.bugs.report.model.Invoice;
 import de.thd.bugs.report.model.InvoiceProjection;
 import de.thd.bugs.report.model.InvoiceState;
+import lombok.NonNull;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.concurrent.Future;
@@ -15,6 +17,18 @@ import java.util.concurrent.Future;
  * @author tlang
  */
 public interface IInvoiceService {
+
+
+    /**
+     * Creates a new invoice.
+     *
+     * @param invoice a given new invoice.
+     * @throws Exception a given exception
+     */
+    @Async
+    Future<String> invoiceInvoice(@NonNull Invoice invoice) throws Exception;
+
+
 
     /**
      * Finds all invoices projected by the needed values.

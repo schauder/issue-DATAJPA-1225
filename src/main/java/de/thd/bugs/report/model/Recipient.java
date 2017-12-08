@@ -123,8 +123,8 @@ public class Recipient implements java.io.Serializable {
         this.recipientCity = recipientCity;
         this.recipientCountry = recipientCountry;
         this.recipientWeb = recipientWeb;
-        this.information.setCreatedBy(information.getCreatedBy());
-        this.information.setModifiedBy(information.getModifiedBy());
+        this.information.setCreatedBy("tlang");
+        this.information.setModifiedBy("tlang");
     }
 
     /**
@@ -138,6 +138,16 @@ public class Recipient implements java.io.Serializable {
         return new Recipient(recipient.recipientSalutation, recipient.getRecipient(), recipient.getRecipientContactPerson(),
                 recipient.getRecipientStreet(), recipient.getRecipientBox(), recipient.recipientPostalcode, recipient.getRecipientCity(),
                 recipient.getRecipientCountry(), recipient.getRecipientWeb(), recipient.getInformation());
+    }
+
+    /**
+     * Makes a test recipient.
+     *
+     * @return Recipient
+     */
+    public static Recipient makeTestRecipient() {
+        return new Recipient("Fa", "Test", "Test", "Gasse 123", "",
+                "55555", "Teststadt", "Deutschland", "www.rechnung.de", new Information());
     }
 
     /**
