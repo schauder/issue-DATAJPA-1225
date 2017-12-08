@@ -2,7 +2,6 @@ package de.thd.bugs.report;
 
 import de.thd.bugs.report.model.Invoice;
 import de.thd.bugs.report.model.InvoiceProjection;
-import de.thd.bugs.report.model.InvoiceState;
 import de.thd.bugs.report.service.IInvoiceRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +22,11 @@ public class ReportApplicationTests {
     public void contextLoads() {
 
 		assertThat(repository).isNotNull();
-		repository.save(Invoice.makeTestInvoice());
+		Invoice invoice = new Invoice();
+		invoice.setBookingTag("expectedTag");
+		repository.save(invoice);
 
-		Iterable<InvoiceProjection> invoiceProjections = repository.findAllProjectedByInvoiceStateAndSimilarUserOrApiGroup("%tlang%|%Seminare%", InvoiceState.Invoiced.ordinal());
+		Iterable<InvoiceProjection> invoiceProjections = repository.findAllNative();
 
 		InvoiceProjection invoiceProjection = invoiceProjections.iterator().next();
 
