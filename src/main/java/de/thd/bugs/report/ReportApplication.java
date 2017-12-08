@@ -50,6 +50,7 @@ public class ReportApplication extends AsyncConfigurerSupport implements Command
 
     @Override
     public void run(String... strings) throws InterruptedException, ExecutionException {
+    	/*
         log.error("first, let´s seed a test invoice ... ");
         final Future<String> invoice = invoiceService.invoiceInvoice(Invoice.makeTestInvoice());
         while (!invoice.isDone()) {
@@ -63,6 +64,15 @@ public class ReportApplication extends AsyncConfigurerSupport implements Command
         }
         Assert.notNull(invoices.get(), "something went wrong ...");
         final String bookingTagsJoined = StreamSupport.stream(invoices.get().spliterator(), false).map(InvoiceProjection::getBookingTag).collect(Collectors.joining("; "));
-        log.error(bookingTagsJoined);
+
+		InvoiceProjection next = invoices.get().iterator().next();
+
+		// should be not null
+		String bookingTag = next.getBookingTag();
+
+		System.out.println("booking tag:" + bookingTag);
+
+		log.error(bookingTagsJoined);
+		*/
     }
 }

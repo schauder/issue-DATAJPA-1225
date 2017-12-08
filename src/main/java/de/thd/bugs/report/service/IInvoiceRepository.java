@@ -19,7 +19,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author tlang
  */
-interface IInvoiceRepository extends CrudRepository<Invoice, Long> {
+public interface IInvoiceRepository extends CrudRepository<Invoice, Long> {
 
     /**
      * Finds all invoices by a given user login and a given invoice state.
