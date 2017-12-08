@@ -36,6 +36,4 @@ public class Invoice implements java.io.Serializable {
     private long invoiceId;
 
     private String bookingTag;
-
-
 }

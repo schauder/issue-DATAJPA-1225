@@ -31,7 +31,8 @@ public class ReportApplicationTests {
 		InvoiceProjection invoiceProjection = invoiceProjections.iterator().next();
 
 		assertThat(invoiceProjection).describedAs("projection").isNotNull();
-		assertThat(invoiceProjection.getBookingTag()).describedAs("booking tag").isNotNull();
+		String bookingTag = invoiceProjection.getBookingTag();
+		assertThat(bookingTag).describedAs("booking tag").isNotNull();
 	}
 
 }
