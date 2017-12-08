@@ -110,12 +110,6 @@ public class Invoice implements java.io.Serializable {
     @Valid
     private Recipient recipient;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @NotNull
-    @Valid
-    private Biller biller;
-
-
     /**
      * Standard Constructor.
      */
@@ -150,7 +144,7 @@ public class Invoice implements java.io.Serializable {
     private Invoice(String bookingTag, String invoiceNumber, String invoiceMemo, LocalDate invoiceDate, LocalDate serviceDateFrom,
 					LocalDate serviceDateUntil, String accountingConnection, String paymentTerms, String taxId,
 					String salesTaxId, Set<InvoiceProtocol> invoiceProtocolSet,
-					String invoiceApiGroups, InvoiceState invoiceState, Recipient recipient, Biller biller) {
+					String invoiceApiGroups, InvoiceState invoiceState, Recipient recipient) {
         this();
         this.bookingTag = bookingTag;
         this.invoiceNumber = invoiceNumber;
@@ -166,7 +160,6 @@ public class Invoice implements java.io.Serializable {
         this.invoiceApiGroups = invoiceApiGroups;
         this.invoiceState = invoiceState;
         this.recipient = recipient;
-        this.biller = biller;
         this.information.setCreatedBy("tlang");
         this.information.setModifiedBy("tlang");
     }
@@ -181,10 +174,7 @@ public class Invoice implements java.io.Serializable {
                 LocalDate.now(), LocalDate.now().minusDays(2), LocalDate.now().minusDays(1),
                 "Kontoverbindung: 123", "Einige Zahlungsmodalitäten",
                 "Steuer ID Nummer", "UST ID Nummer", null,
-                "tlang, Seminare", InvoiceState.Invoiced, null, null);
-
-        test.setBiller(Biller.makeTestBiller());
-        test.getBiller().getInvoiceSet().add(test);
+                "tlang, Seminare", InvoiceState.Invoiced, null);
 
         test.setRecipient(Recipient.makeTestRecipient());
         test.getRecipient().getInvoiceSet().add(test);
